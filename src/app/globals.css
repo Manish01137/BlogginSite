@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Monarch design tokens
+   All brand colours live here so they can be matched to monarchvisa.com.
+------------------------------------------------------------------- */
+@theme {
+  /* Royal navy — primary (#0B1F3A = navy-800) */
+  --color-navy-50: #eef2f8;
+  --color-navy-100: #d9e1ee;
+  --color-navy-200: #b3c2db;
+  --color-navy-300: #9aa6ba;
+  --color-navy-400: #5c7398;
+  --color-navy-500: #2a4a7a;
+  --color-navy-600: #1a365f;
+  --color-navy-700: #12294b;
+  --color-navy-800: #0b1f3a;
+  --color-navy-900: #08172b;
+  --color-navy-950: #050e1a;
+  --color-navy: #0b1f3a;
+
+  /* Refined gold — accent, used sparingly */
+  --color-gold-50: #fbf7ea;
+  --color-gold-100: #f6edcf;
+  --color-gold-300: #e3c565;
+  --color-gold-500: #c9a227;
+  --color-gold-700: #8a6a12; /* AA-safe gold for text on light backgrounds */
+  --color-gold: #c9a227;
+
+  /* Neutrals */
+  --color-paper: #faf9f6;
+  --color-paper-deep: #f3f1ea;
+  --color-ink: #14161a;
+  --color-ink-soft: #343944;
+  --color-muted: #5b6170;
+  --color-line: #e6e2d8;
+  --color-whatsapp: #128c7e;
+
+  --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-soft: 0 1px 2px rgb(11 31 58 / 0.04), 0 4px 12px -2px rgb(11 31 58 / 0.06),
+    0 16px 32px -12px rgb(11 31 58 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(11 31 58 / 0.04), 0 12px 24px -6px rgb(11 31 58 / 0.1),
+    0 32px 64px -24px rgb(11 31 58 / 0.18);
+  --shadow-gold: 0 8px 24px -8px rgb(201 162 39 / 0.55);
+
+  --animate-marquee: marquee 50s linear infinite;
+  --animate-blob: blob 22s var(--ease-premium) infinite alternate;
+  --animate-blob-slow: blob 30s var(--ease-premium) infinite alternate-reverse;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.6s var(--ease-premium) infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes blob {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(6%, -8%, 0) scale(1.12);
+    }
+    100% {
+      transform: translate3d(-6%, 4%, 0) scale(0.95);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(1.7);
+      opacity: 0;
+    }
+  }
+  @keyframes fade-up {
+    from {
+      transform: translate3d(0, 16px, 0);
+      opacity: 0;
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+  @keyframes reveal-word {
+    from {
+      transform: translate3d(0, 105%, 0);
+      opacity: 0;
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --ring: var(--color-navy-800);
+    --header-h: 76px;
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.lenis) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  /* Fine paper grain over the whole page */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: var(--grain);
+  }
+
+  :root {
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background-color: var(--color-navy-800);
+    color: var(--color-gold-500);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Utilities
+------------------------------------------------------------------- */
+@utility container-page {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Dark surfaces switch the focus ring to gold for contrast */
+@utility surface-dark {
+  --ring: var(--color-gold-500);
+  color-scheme: dark;
+}
+
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: var(--grain);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Word-by-word headline reveal that runs before hydration (good for LCP) */
+@utility reveal-word {
+  display: inline-block;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: reveal-word 0.8s var(--ease-premium) both;
+    animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+  }
+}
+
+/* Above-the-fold entrance that doesn't wait for hydration */
+@utility fade-up {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: fade-up 0.8s var(--ease-premium) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
